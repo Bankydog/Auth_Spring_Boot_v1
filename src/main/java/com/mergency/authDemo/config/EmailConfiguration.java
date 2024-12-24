@@ -10,19 +10,26 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 public class EmailConfiguration {
+
     @Value("${spring.mail.username}")
     private String emailUsername;
 
     @Value("${spring.mail.password}")
-    private String password;
+    private String emailPassword;
+
+    @Value("${spring.mail.host}")
+    private String emailHost;
+
+    @Value("${spring.mail.port}")
+    private int emailPort;
 
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(emailHost); // ใช้ตัวแปรที่ดึงมาจาก @Value
+        mailSender.setPort(emailPort);
         mailSender.setUsername(emailUsername);
-        mailSender.setPassword(password);
+        mailSender.setPassword(emailPassword);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
